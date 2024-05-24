@@ -6,6 +6,7 @@ AASIST
 Copyright (c) 2021-present NAVER Corp.
 MIT license
 """
+
 import argparse
 import json
 import os
@@ -436,7 +437,7 @@ if __name__ == "__main__":
         dest="output_dir",
         type=str,
         help="output directory for results",
-        default="./exp_result/LA19_SAM/",
+        default="./exp_result/LA19_ASAM/",
     )
 
     parser.add_argument(
@@ -444,7 +445,7 @@ if __name__ == "__main__":
         dest="model_path",
         type=str,
         help="saved model directory",
-        default="./exp_result/trained_model/best.pth",
+        default="./trained_model/best.pth",
     )
     parser.add_argument(
         "--seed", type=int, default=1234, help="random seed (default: 1234)"
