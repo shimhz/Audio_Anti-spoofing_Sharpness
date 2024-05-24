@@ -125,8 +125,6 @@ def main(args: argparse.Namespace) -> None:
     # get optimizer and scheduler
     optim_config["steps_per_epoch"] = len(trn_loader)
     base_optimizer = _get_optimizer(optim_config)
-    # optimizer, scheduler = create_optimizer(model.parameters(), optim_config)
-    # optimizer_swa = SWA(optimizer)
     optimizer = SAM(
         model.parameters(),
         base_optimizer,
@@ -141,7 +139,6 @@ def main(args: argparse.Namespace) -> None:
     best_eval_eer = 100.0
     best_dev_tdcf = 0.05
     best_eval_tdcf = 1.0
-    # n_swa_update = 0  # number of snapshots of model to use in SWA
     f_log = open(model_tag / "metric_log.txt", "a")
     f_log.write("=" * 5 + "\n")
 
@@ -205,17 +202,12 @@ def main(args: argparse.Namespace) -> None:
                     print(log_text)
                     f_log.write(log_text + "\n")
 
-            # print("Saving epoch {} for swa".format(epoch))
-            # optimizer_swa.update_swa()
-            # n_swa_update += 1
         writer.add_scalar("best_dev_eer", best_dev_eer, epoch)
         writer.add_scalar("best_dev_tdcf", best_dev_tdcf, epoch)
 
     print("Start final evaluation")
     epoch += 1
-    # if n_swa_update > 0:
-    # optimizer_swa.swap_swa_sgd()
-    # optimizer_swa.bn_update(trn_loader, model, device=device)
+
     produce_evaluation_file(
         eval_loader, model, device, eval_score_path, eval_trial_path
     )
@@ -260,7 +252,6 @@ def get_loader(
     prefix_2019 = "ASVspoof2019.{}".format(track)
 
     trn_database_path = database_path / "ASVspoof2019_{}_train/".format(track)
-    # trn_database_path_PA = database_path / "ASVspoof2019_LA_train/"
     database_path_ASVspoof2015 = "/data/asvspoof2015/"
 
     dev_database_path = database_path / "ASVspoof2019_{}_dev/".format(track)
@@ -288,22 +279,10 @@ def get_loader(
         dir_meta=trn_list_path, is_train=True, is_eval=False
     )
     print("no. training files ASVspoof2019:", len(file_train))
-    """
-    d_label_trn_add, file_train_add = genSpoof_list_ASVspoof2015(dir_meta=trn_list_path_ASVspoof2015,
-                                                         is_train=True,
-                                                         is_eval=False)
-    print("no. training files ASVspoof2015:", len(file_train_add))
-    """
+
     train_set = Dataset_ASVspoof2019_train(
         list_IDs=file_train, labels=d_label_trn, base_dir=trn_database_path
     )
-    """
-    train_set_add = Dataset_ASVspoof2015_train(list_IDs=file_train_add,
-                                                        labels=d_label_trn_add,
-                                                        base_dir=database_path_ASVspoof2015)
-
-    train_set = data.ConcatDataset([train_set, train_set_add])                                                    
-    """
     gen = torch.Generator()
     gen.manual_seed(seed)
     trn_loader = DataLoader(
@@ -437,7 +416,7 @@ if __name__ == "__main__":
         dest="output_dir",
         type=str,
         help="output directory for results",
-        default="./exp_result/LA19_ASAM/",
+        default="./exp_result/LA19_SAM/",
     )
 
     parser.add_argument(

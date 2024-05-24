@@ -10,16 +10,16 @@ pip install -r requirements.txt
 ### Training
 
 1. Download ASVspoof2019 dataset 
-2. Change the "database_path" in `AASIST-L_ASAM.conf` file
+2. Change the "database_path" in `AASIST-L_SAM.conf` file
     (or Move data to data folder)
 
 ```
-python main.py --config ./config/AASIST-L_ASAM.conf
+python main.py --config ./config/AASIST-L_SAM.conf
 ```
 
 ### Evaluation using pre-trained model
 ```
-python main.py --eval --config ./config/AASIST-L_ASAM.conf
+python main.py --eval --config ./config/AASIST-L_SAM.conf
 ```
 
 - Performance
