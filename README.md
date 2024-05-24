@@ -1,6 +1,6 @@
 # Multi-Dataset Co-Training with Sharpness-Aware Optimization for Audio Anti-spoofing
 
-Official Repository for the paper "Multi-Dataset Co-Training with Sharpness-Aware Optimization for Audio Anti-spoofing", published in Interspeech 2023 ([Paper](https://www.isca-speech.org/archive/pdfs/interspeech_2023/shim23c_interspeech.pdf)).
+Official Repository for the paper "Multi-Dataset Co-Training with Sharpness-Aware Optimization for Audio Anti-spoofing", published in Interspeech 2023 ([Paper](https://www.isca-archive.org/interspeech_2023/shim23c_interspeech.html))
 
 ### Dependencies
 ```
